@@ -11,7 +11,6 @@
 	import { fade, fly } from 'svelte/transition';
 	import Icon from '@iconify/svelte';
 	import ActiveLink from './ActiveLink.svelte';
-	import { page } from '$app/stores';
 
 	export let items: DrawerItem[];
 
