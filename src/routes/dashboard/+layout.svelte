@@ -1,36 +1,39 @@
-<script>
+<script lang="ts">
 	import Drawer from '$lib/components/Drawer.svelte';
 	import { melt } from '@melt-ui/svelte';
 	import Icon from '@iconify/svelte';
 	import { QueryClient, QueryClientProvider } from '@sveltestack/svelte-query';
+	import { page } from '$app/stores';
+
+	let title: string = '';
 
 	const queryClient = new QueryClient();
+	const items = [
+		{
+			label: 'Overview',
+			icon: 'mage:dashboard-2-fill',
+			href: '/dashboard/overview'
+		},
+		{
+			label: 'Bookings',
+			icon: 'lets-icons:order-fill',
+			href: '/dashboard/bookings'
+		},
+		{
+			label: 'Users',
+			icon: 'mage:users-fill',
+			href: '/dashboard/users'
+		}
+	];
+
+	$: title = items.find((item) => $page.url.pathname == item.href)?.label ?? '';
 </script>
 
 <QueryClientProvider client={queryClient}>
 	<header
-		class="fixed top-0 left-0 right-0 h-16 border-b bg-white flex items-center justify-between px-3"
+		class="fixed top-0 left-0 right-0 h-16 border-b bg-white flex items-center justify-between px-3 gap-5"
 	>
-		<Drawer
-			let:trigger
-			items={[
-				{
-					label: 'Overview',
-					icon: 'mage:dashboard-2-fill',
-					href: '/dashboard/overview'
-				},
-				{
-					label: 'Bookings',
-					icon: 'lets-icons:order-fill',
-					href: '/dashboard/bookings'
-				},
-				{
-					label: 'Users',
-					icon: 'mage:users-fill',
-					href: '/dashboard/users'
-				}
-			]}
-		>
+		<Drawer let:trigger {items}>
 			<button
 				use:melt={trigger}
 				class="p-1 flex items-center justify-center w-9 h-9 border rounded-md border-gray-300"
@@ -38,6 +41,9 @@
 				<Icon width={20} icon="material-symbols:menu" />
 			</button>
 		</Drawer>
+		<div class="flex-1">
+			<div class="text-xl font-medium">{title}</div>
+		</div>
 	</header>
 	<main class="pt-16">
 		<slot />
