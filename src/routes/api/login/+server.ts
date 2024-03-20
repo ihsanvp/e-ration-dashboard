@@ -1,5 +1,6 @@
 import { text } from '@sveltejs/kit';
 import { z } from 'zod';
+import { AUTH_COOKIE_NAME, AUTH_COOKIE_OPTIONS } from '$lib/constants.js';
 
 const schema = z.object({
 	uid: z.string()

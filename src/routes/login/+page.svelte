@@ -1,22 +1,41 @@
 <script lang="ts">
+	import { page } from '$app/stores';
+	import Spinner from '$lib/components/Spinner.svelte';
+	import Toast from '$lib/components/Toast.svelte';
 	import { getFirebaseAuth } from '$lib/firebase/firebase.client';
+	import { FirebaseError } from 'firebase/app';
 	import { signInWithEmailAndPassword } from 'firebase/auth';
 
 	let email: string;
 	let password: string;
 	let loading = false;
+	let toast: Toast;
 
 	async function login() {
-		const auth = getFirebaseAuth();
-		const credentials = await signInWithEmailAndPassword(auth, email, password);
-		await fetch('/api/login', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ uid: credentials.user.uid })
-		});
+		try {
+			loading = true;
+			const auth = getFirebaseAuth();
+			const credentials = await signInWithEmailAndPassword(auth, email, password);
+			await fetch('/api/login', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ uid: credentials.user.uid })
+			});
+			window.location.href = window.location.href.replace($page.url.pathname, '/');
+		} catch (err) {
+			loading = false;
+			if (err instanceof FirebaseError) {
+				if (err.code == 'auth/invalid-credential') {
+					return toast.error('Incorrect email and password');
+				}
+				return toast.error(err.message);
+			}
+			toast.error(String(err));
+		}
 	}
 </script>
 
+<Toast bind:this={toast} />
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
 	<div class="sm:mx-auto sm:w-full sm:max-w-sm">
 		<img
@@ -30,7 +49,7 @@
 	</div>
 
 	<div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-		<form class="space-y-6" action="#" method="POST">
+		<form class="space-y-6" on:submit|preventDefault={login}>
 			<div>
 				<label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email</label>
 				<div class="mt-2">
@@ -68,9 +87,14 @@
 			<div>
 				<button
 					type="submit"
-					class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-					>Sign in</button
+					class="flex w-full h-12 items-center justify-center rounded-md bg-indigo-600 px-3 py-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
 				>
+					{#if loading}
+						<Spinner color="white" size="20px" width="2px" />
+					{:else}
+						<span>Sign in</span>
+					{/if}
+				</button>
 			</div>
 		</form>
 	</div>
