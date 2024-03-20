@@ -4,6 +4,7 @@
 	import { useQuery } from '@sveltestack/svelte-query';
 	import { Timestamp, collection, getDocs } from 'firebase/firestore';
 	import Icon from '@iconify/svelte';
+	import Spinner from '$lib/components/Spinner.svelte';
 
 	const queryResult = useQuery<BookingPopulated[], Error>('bookings', () =>
 		fetch('/api/bookings').then((res) => res.json())
@@ -11,7 +12,9 @@
 </script>
 
 {#if $queryResult.isLoading}
-	<span>Loading...</span>
+	<div class="h-[80vh] flex items-center justify-center">
+		<Spinner color="black" width="3px" size="40px" />
+	</div>
 {:else if $queryResult.error}
 	<span>An error has occurred: {$queryResult.error.message}</span>
 {:else if $queryResult.isSuccess}

@@ -15,6 +15,11 @@
 			href: '/dashboard/overview'
 		},
 		{
+			label: 'Items',
+			icon: 'mdi:briefcase',
+			href: '/dashboard/items'
+		},
+		{
 			label: 'Bookings',
 			icon: 'lets-icons:order-fill',
 			href: '/dashboard/bookings'
