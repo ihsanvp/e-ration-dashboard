@@ -1,13 +1,13 @@
 // See https://kit.svelte.dev/docs/types#app
 
-import type { User } from '$lib/models/auth.models';
+import type { AdminUser } from '$lib/models/auth.models';
 
 // for information about these interfaces
 declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			user?: User;
+			user?: AdminUser;
 		}
 		// interface PageData {}
 		// interface PageState {}
