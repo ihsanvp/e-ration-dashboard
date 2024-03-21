@@ -6,9 +6,16 @@
 	import Icon from '@iconify/svelte';
 	import Spinner from '$lib/components/Spinner.svelte';
 
-	const queryResult = useQuery<BookingPopulated[], Error>('bookings', () =>
-		fetch('/api/bookings').then((res) => res.json())
-	);
+	const queryResult = useQuery<BookingPopulated[], Error>('bookings', async () => {
+		return (await getDocs(collection(getFirestoreApp(), 'bookings'))).docs.map((doc) => ({
+			...doc.data(),
+			id: doc.id
+		})) as BookingPopulated[];
+	});
+
+	function formatDate(date: Date): string {
+		return `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`;
+	}
 </script>
 
 {#if $queryResult.isLoading}
@@ -43,14 +50,14 @@
 						</div>
 					</div>
 					<div class="text-gray-600 text-sm">
-						{Timestamp.fromMillis(booking.timestamp).toDate().toDateString()}
+						{formatDate(booking.timestamp.toDate())}
 					</div>
 				</div>
 				<div class="p-3 border-t border-gray-950">
 					{#each booking.items as item}
 						<div class="flex items-center justify-between">
 							<span>{item.name}</span>
-							<span>{`${item.max_quantity}${item.unit}`}</span>
+							<span>{item.quantity}<em>{item.unit}</em></span>
 						</div>
 					{/each}
 				</div>

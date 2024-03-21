@@ -19,6 +19,6 @@ export interface BookingItem {
 export interface BookingPopulated {
 	id: string;
 	user: User;
-	items: Item[];
-	timestamp: number;
+	items: BookingItem[];
+	timestamp: Timestamp;
 }
