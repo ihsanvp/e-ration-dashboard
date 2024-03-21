@@ -11,6 +11,7 @@
 	import { fade, fly } from 'svelte/transition';
 	import Icon from '@iconify/svelte';
 	import ActiveLink from './ActiveLink.svelte';
+	import { goto } from '$app/navigation';
 
 	export let items: DrawerItem[];
 
@@ -21,6 +22,13 @@
 		forceVisible: true,
 		preventScroll: true
 	});
+
+	async function logout() {
+		await fetch('/api/logout', {
+			method: 'POST'
+		});
+		goto('/login', { invalidateAll: true, replaceState: true });
+	}
 </script>
 
 <slot trigger={$trigger} />
@@ -34,7 +42,7 @@
 		<div
 			use:melt={$content}
 			class="fixed left-0 top-0 z-50 h-screen w-full max-w-[350px] bg-white p-3
-            shadow-lg focus:outline-none"
+            shadow-lg focus:outline-none flex flex-col"
 			transition:fly={{
 				x: -350,
 				duration: 300,
@@ -48,8 +56,8 @@
 			>
 				<Icon width={20} icon="material-symbols:close" />
 			</button>
-			<!-- <div class="text-2xl font-medium">Menu</div> -->
-			<div class="flex flex-col mt-20 gap-3">
+			<div class="text-2xl font-medium px-3 py-2">E Ration Dashboard</div>
+			<div class="flex flex-col mt-10 gap-3">
 				{#each items as item}
 					<ActiveLink
 						href={item.href}
@@ -61,6 +69,12 @@
 						<span>{item.label}</span>
 					</ActiveLink>
 				{/each}
+			</div>
+			<div class="flex-1"></div>
+			<div>
+				<button on:click={logout} class="bg-red-500 text-white w-full py-3 rounded-md"
+					>Logout</button
+				>
 			</div>
 		</div>
 	{/if}
