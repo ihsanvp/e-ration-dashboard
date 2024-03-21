@@ -5,6 +5,7 @@
 	import { collection, getDocs } from 'firebase/firestore';
 	import Icon from '@iconify/svelte';
 	import Spinner from '$lib/components/Spinner.svelte';
+	import ItemBlock from '$lib/components/ItemBlock.svelte';
 
 	const queryResult = useQuery<Item[], Error>('items', async () => {
 		return (await getDocs(collection(getFirestoreApp(), 'items'))).docs.map((doc) => ({
@@ -36,14 +37,7 @@
 	</div>
 	<div class="flex flex-col gap-5 p-3">
 		{#each $queryResult.data as item}
-			<div class="grid grid-cols-8 p-3 border rounded-md">
-				<div class="col-span-4">{item.name}</div>
-				<div class="col-span-2">{item.max_quantity}</div>
-				<div class="col-span-1 flex justify-end">{item.unit}</div>
-				<div class="col-span-1 flex justify-end items-center">
-					<Icon icon="mi:options-vertical" />
-				</div>
-			</div>
+			<ItemBlock {item} />
 		{/each}
 	</div>
 {/if}
