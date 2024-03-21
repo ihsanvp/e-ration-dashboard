@@ -6,6 +6,7 @@
 	import Icon from '@iconify/svelte';
 	import Spinner from '$lib/components/Spinner.svelte';
 	import ItemBlock from '$lib/components/ItemBlock.svelte';
+	import AddItemDialog from '$lib/components/AddItemDialog.svelte';
 
 	const queryResult = useQuery<Item[], Error>('items', async () => {
 		return (await getDocs(collection(getFirestoreApp(), 'items'))).docs.map((doc) => ({
@@ -26,9 +27,7 @@
 		<div class="flex-1">
 			<input class="w-full border border-gray-300 rounded-md" type="search" placeholder="Search" />
 		</div>
-		<button class="p-2 flex items-center justify-center border rounded-md bg-black text-white">
-			<Icon width={25} icon="material-symbols:add" />
-		</button>
+		<AddItemDialog />
 	</div>
 	<div class="grid grid-cols-10 border-b sticky px-5 py-5 bg-white top-36 items-center">
 		<div class="text-lg font-medium col-span-4">Name</div>
@@ -37,7 +36,7 @@
 	</div>
 	<div class="flex flex-col gap-5 p-3">
 		{#each $queryResult.data as item}
-			<ItemBlock {item} />
+			<ItemBlock data={item} />
 		{/each}
 	</div>
 {/if}
