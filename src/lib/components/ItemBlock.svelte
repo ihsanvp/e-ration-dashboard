@@ -2,8 +2,10 @@
 	import type { Item } from '$lib/models/items.models';
 	import Icon from '@iconify/svelte';
 	import { createDropdownMenu, melt } from '@melt-ui/svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	export let data: Item;
+	const dispatch = createEventDispatcher();
 
 	const {
 		elements: { trigger, menu, item, separator, arrow },
@@ -37,6 +39,7 @@
 		<button
 			class="px-3 py-2 flex items-center justify-start gap-3 bg-gray-100 rounded-md"
 			use:melt={$item}
+			on:click={() => dispatch('edit', data)}
 		>
 			<Icon icon="material-symbols:edit" />
 			<span>Edit</span>
@@ -44,6 +47,7 @@
 		<button
 			class="px-3 py-2 flex items-center justify-start gap-3 bg-red-100 rounded-md"
 			use:melt={$item}
+			on:click={() => dispatch('delete', data)}
 		>
 			<Icon icon="material-symbols:delete" />
 			<span>Delete</span>

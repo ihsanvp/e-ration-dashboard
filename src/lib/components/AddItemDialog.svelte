@@ -81,7 +81,7 @@
 						<div>{$mutation.error?.message}</div>
 					</div>
 					<div class="p-5">
-						<button on:click={closeModal} class="bg-black text-white px-10 py-3 text-sm"
+						<button on:click={closeModal} class="bg-black text-white px-10 py-3 text-sm rounded-md"
 							>Close</button
 						>
 					</div>
@@ -93,7 +93,7 @@
 						<div>New Item ({$mutation.data?.name}) added</div>
 					</div>
 					<div class="p-5">
-						<button on:click={closeModal} class="bg-black text-white px-10 py-3 text-sm"
+						<button on:click={closeModal} class="bg-black text-white px-10 py-3 text-sm rounded-md"
 							>Close</button
 						>
 					</div>

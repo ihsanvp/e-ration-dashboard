@@ -7,6 +7,9 @@
 	import Spinner from '$lib/components/Spinner.svelte';
 	import ItemBlock from '$lib/components/ItemBlock.svelte';
 	import AddItemDialog from '$lib/components/AddItemDialog.svelte';
+	import DeleteItemDialog from '$lib/components/DeleteItemDialog.svelte';
+
+	let deleteItemDialog: DeleteItemDialog;
 
 	const queryResult = useQuery<Item[], Error>('items', async () => {
 		return (await getDocs(collection(getFirestoreApp(), 'items'))).docs.map((doc) => ({
@@ -14,6 +17,10 @@
 			id: doc.id
 		})) as Item[];
 	});
+
+	function onDeleteItem(e: CustomEvent<Item>) {
+		deleteItemDialog.start(e.detail);
+	}
 </script>
 
 {#if $queryResult.isLoading}
@@ -23,6 +30,7 @@
 {:else if $queryResult.error}
 	<span>An error has occurred: {$queryResult.error.message}</span>
 {:else if $queryResult.isSuccess}
+	<DeleteItemDialog bind:this={deleteItemDialog} />
 	<div class="flex items-center justify-between py-5 px-3 sticky top-16 bg-white border-b gap-5">
 		<div class="flex-1">
 			<input class="w-full border border-gray-300 rounded-md" type="search" placeholder="Search" />
@@ -36,7 +44,7 @@
 	</div>
 	<div class="flex flex-col gap-5 p-3">
 		{#each $queryResult.data as item}
-			<ItemBlock data={item} />
+			<ItemBlock on:delete={onDeleteItem} data={item} />
 		{/each}
 	</div>
 {/if}
