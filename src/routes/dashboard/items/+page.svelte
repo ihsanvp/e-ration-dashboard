@@ -2,7 +2,7 @@
 	import { getFirestoreApp } from '$lib/firebase/firestore.client';
 	import type { Item } from '$lib/models/items.models';
 	import { useQuery } from '@sveltestack/svelte-query';
-	import { collection, getDocs } from 'firebase/firestore';
+	import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 	import Icon from '@iconify/svelte';
 	import Spinner from '$lib/components/Spinner.svelte';
 	import ItemBlock from '$lib/components/ItemBlock.svelte';
@@ -12,7 +12,8 @@
 	let deleteItemDialog: DeleteItemDialog;
 
 	const queryResult = useQuery<Item[], Error>('items', async () => {
-		return (await getDocs(collection(getFirestoreApp(), 'items'))).docs.map((doc) => ({
+		const q = query(collection(getFirestoreApp(), 'items'), orderBy('timestamp'));
+		return (await getDocs(q)).docs.map((doc) => ({
 			...doc.data(),
 			id: doc.id
 		})) as Item[];

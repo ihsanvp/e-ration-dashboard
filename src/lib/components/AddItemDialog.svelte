@@ -3,7 +3,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import Icon from '@iconify/svelte';
 	import { useQueryClient, useMutation } from '@sveltestack/svelte-query';
-	import { addDoc, collection, doc } from 'firebase/firestore';
+	import { Timestamp, addDoc, collection, doc, serverTimestamp } from 'firebase/firestore';
 	import { getFirestoreApp } from '$lib/firebase/firestore.client';
 	import type { Item, ItemData } from '$lib/models/items.models';
 	import Spinner from './Spinner.svelte';
@@ -23,15 +23,20 @@
 	const queryClient = useQueryClient();
 
 	const mutation = useMutation<Item, Error, ItemData>(
-		async (item: ItemData) => {
-			const docRef = await addDoc(collection(getFirestoreApp(), 'items'), item);
+		async (item) => {
+			const timestamp = serverTimestamp();
+			const docRef = await addDoc(collection(getFirestoreApp(), 'items'), {
+				...item,
+				timestamp
+			});
 			return {
 				...item,
-				id: docRef.id
+				id: docRef.id,
+				timestamp: Timestamp.fromDate(new Date())
 			};
 		},
 		{
-			onSuccess: (data) => {
+			onSuccess: () => {
 				queryClient.invalidateQueries('items');
 			}
 		}
@@ -115,6 +120,7 @@
 						bind:value={max_quantity}
 						class="w-full rounded-md"
 						type="number"
+						step="0.1"
 						id="add-item__max-quantity"
 					/>
 				</label>
