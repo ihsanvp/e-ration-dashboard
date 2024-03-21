@@ -10,7 +10,7 @@
 
 	let name: string;
 	let unit: string;
-	let max_quantity: number | undefined;
+	let max_quantity: number;
 
 	const {
 		elements: { trigger, portalled, overlay, content, title, description, close },
@@ -36,24 +36,6 @@
 			}
 		}
 	);
-
-	function closeModal() {
-		$open = false;
-		name = '';
-		unit = '';
-		max_quantity = undefined;
-		$mutation.reset();
-	}
-
-	function onSubmit() {
-		if (name && unit && max_quantity) {
-			$mutation.mutate({
-				name,
-				unit,
-				max_quantity
-			});
-		}
-	}
 </script>
 
 <button
@@ -81,9 +63,7 @@
 						<div>{$mutation.error?.message}</div>
 					</div>
 					<div class="p-5">
-						<button on:click={closeModal} class="bg-black text-white px-10 py-3 text-sm"
-							>Close</button
-						>
+						<button use:melt={$close} class="bg-black text-white px-10 py-3 text-sm">Close</button>
 					</div>
 				</div>
 			{:else if $mutation.isSuccess}
@@ -93,14 +73,15 @@
 						<div>New Item ({$mutation.data?.name}) added</div>
 					</div>
 					<div class="p-5">
-						<button on:click={closeModal} class="bg-black text-white px-10 py-3 text-sm"
-							>Close</button
-						>
+						<button use:melt={$close} class="bg-black text-white px-10 py-3 text-sm">Close</button>
 					</div>
 				</div>
 			{/if}
-			<h2 use:melt={$title} class="text-xl font-medium p-5 text-center">Add new Item</h2>
-			<form class="p-5 flex flex-col gap-5" on:submit|preventDefault={onSubmit}>
+			<h2 class="text-xl font-medium p-5 text-center">Add new Item</h2>
+			<form
+				class="p-5 flex flex-col gap-5"
+				on:submit|preventDefault={() => $mutation.mutate({ name, unit, max_quantity })}
+			>
 				<label for="add-item__name">
 					<p class="mb-2">Name</p>
 					<input bind:value={name} class="w-full rounded-md" type="text" id="add-item__name" />
