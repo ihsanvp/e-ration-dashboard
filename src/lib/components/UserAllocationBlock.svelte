@@ -6,8 +6,8 @@
 	export let data: UserWithAllocation;
 </script>
 
-<div class="border rounded-md border-gray-400">
-	<div class="flex items-center gap-5 px-5 pt-5">
+<div class="border rounded-md border-gray-400 py-5">
+	<div class="flex items-center gap-5 px-5">
 		<div class="w-12 h-12 bg-black text-white flex items-center justify-center rounded-full">
 			<Icon width={30} icon="solar:user-bold" />
 		</div>
@@ -30,23 +30,25 @@
 			<div class="text-md font-medium">{data.phoneNumber}</div>
 		</div>
 	</div>
-	<div class="my-5 px-5">
-		<div class="bg-gray-100 rounded-md p-3">
-			<div class="grid grid-cols-3 mb-5">
-				<div class="col-span-1 font-bold">Item</div>
-				<div class="col-span-1 font-bold text-center">Allocated</div>
-				<div class="col-span-1 font-bold text-right">Available</div>
-			</div>
-			{#each data.allocation.items as item}
-				<div class="grid grid-cols-3">
-					<div class="col-span-1">{item.name}</div>
-					<div class="col-span-1 text-center">{item.quantity}{item.unit}</div>
-					<div class="col-span-1 text-right">{item.max_quantity}{item.unit}</div>
+	{#if data.allocation.items.length}
+		<div class="my-5 px-5">
+			<div class="bg-gray-100 rounded-md p-3">
+				<div class="grid grid-cols-3 mb-5">
+					<div class="col-span-1 font-bold">Item</div>
+					<div class="col-span-1 font-bold text-center">Allocated</div>
+					<div class="col-span-1 font-bold text-right">Available</div>
 				</div>
-			{/each}
+				{#each data.allocation.items as item}
+					<div class="grid grid-cols-3">
+						<div class="col-span-1">{item.name}</div>
+						<div class="col-span-1 text-center">{item.quantity}{item.unit}</div>
+						<div class="col-span-1 text-right">{item.max_quantity}{item.unit}</div>
+					</div>
+				{/each}
+			</div>
 		</div>
-	</div>
-	<div class="px-5 py-3 border-t border-gray-400 flex items-center justify-end">
-		<UserAllocationDialog {data} />
-	</div>
+		<div class="px-5 pt-5 border-t border-gray-400 flex items-center justify-end">
+			<UserAllocationDialog {data} />
+		</div>
+	{/if}
 </div>
