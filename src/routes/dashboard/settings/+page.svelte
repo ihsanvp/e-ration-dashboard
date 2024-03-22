@@ -20,7 +20,7 @@
 	<div class="flex items-center justify-between gap-10">
 		<div class="flex flex-col gap-2">
 			<div class="text-xl">Monthly Booking</div>
-			<div class="text-xs text-gray-500">Only allow users to book items once in current month</div>
+			<div class="text-xs text-gray-500">Only allow users to book items once per month</div>
 		</div>
 		<div>
 			<button
