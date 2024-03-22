@@ -97,10 +97,7 @@
 			<h2 use:melt={$title} class="text-xl font-medium p-5 text-center">
 				Manage Allocations for {data.profile?.name}
 			</h2>
-			<form
-				class="p-5 flex-1 flex flex-col gap-5 overflow-y-scroll"
-				on:submit|preventDefault={onSubmit}
-			>
+			<form class="p-5 flex-1 flex flex-col gap-5 overflow-y-scroll">
 				{#each data.allocation.items as item, i}
 					<label for={`manage-allocation__${item.id}`}>
 						<p class="mb-2">{item.name}</p>
@@ -123,7 +120,9 @@
 				<button class="bg-gray-200 py-3 text-sm rounded-md" type="button" on:click={closeModal}
 					>Cancel</button
 				>
-				<button class="bg-black text-white py-3 text-sm rounded-md" type="submit">Update</button>
+				<button class="bg-black text-white py-3 text-sm rounded-md" on:click={onSubmit}
+					>Update</button
+				>
 			</div>
 		</div>
 	{/if}
