@@ -38,6 +38,7 @@
 		{
 			onSuccess: () => {
 				queryClient.invalidateQueries('items');
+				queryClient.invalidateQueries('users');
 			}
 		}
 	);

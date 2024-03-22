@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { UserWithAllocation } from '$lib/models/auth.models';
 	import Icon from '@iconify/svelte';
+	import UserAllocationDialog from './UserAllocationDialog.svelte';
 
 	export let data: UserWithAllocation;
 </script>
@@ -46,6 +47,6 @@
 		</div>
 	</div>
 	<div class="px-5 py-3 border-t border-gray-400 flex items-center justify-end">
-		<button class="bg-black text-white px-5 py-2 text-sm rounded-md">Manage Allocations</button>
+		<UserAllocationDialog {data} />
 	</div>
 </div>
