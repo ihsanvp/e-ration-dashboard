@@ -23,9 +23,9 @@
 {:else if $queryResult.error}
 	<span>An error has occurred: {$queryResult.error.message}</span>
 {:else if $queryResult.isSuccess}
-	<!-- {#if $queryResult.isRefetching}
+	{#if $queryResult.isRefetching}
 		<div class="fixed top-36 inset-0 bg-white/20 backdrop-blur-sm z-10"></div>
-	{/if} -->
+	{/if}
 	<div class="flex items-center justify-between py-5 px-3 sticky top-16 bg-white border-b gap-5">
 		<div class="flex-1">
 			<input class="w-full border border-gray-300 rounded-md" type="search" placeholder="Search" />
