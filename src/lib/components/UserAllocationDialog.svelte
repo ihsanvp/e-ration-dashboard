@@ -11,8 +11,7 @@
 	import type { AllocationItem } from '$lib/models/allocations.data';
 
 	export let data: UserWithAllocation;
-
-	let values: AllocationItem[] = data.allocation.items.slice();
+	$: values = data.allocation.items.slice();
 
 	const {
 		elements: { trigger, portalled, overlay, content, title, description, close },
