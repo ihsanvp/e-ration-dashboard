@@ -87,7 +87,7 @@
 			<div>
 				<button
 					type="submit"
-					class="flex w-full h-12 items-center justify-center rounded-md bg-indigo-600 px-3 py-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+					class="flex w-full h-12 items-center justify-center rounded-md bg-black px-3 py-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
 				>
 					{#if loading}
 						<Spinner color="white" size="20px" width="2px" />
